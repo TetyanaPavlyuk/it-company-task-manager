@@ -16,7 +16,9 @@ class Position(models.Model):
 class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
         related_name="workers",
     )
 
@@ -72,5 +74,5 @@ class Task(models.Model):
     def __str__(self):
         return f"{self.name} ({self.priority}) / {self.deadline}"
 
-    def get_absolute_url(self):
-        pass
+    # def get_absolute_url(self):
+    #     pass
