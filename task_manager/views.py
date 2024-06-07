@@ -1,3 +1,50 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import generic
 
-# Create your views here.
+from .models import Position, Worker, TaskType, Task
+
+
+@login_required
+def index(request):
+    """View function for the home page of the site"""
+    num_experts = Worker.objects.count()
+    num_completed_tasks = Task.objects.filter(is_completed=True).count()
+    num_defined_tasks = Task.objects.filter(is_completed=False).count()
+
+    num_visits = request.session.get("num_visits", 1)
+    request.session["num_visits"] = num_visits + 1
+
+    context = {
+        "num_experts": num_experts,
+        "num_completed_tasks": num_completed_tasks,
+        "num_defined_tasks": num_defined_tasks,
+        "num_visits": num_visits,
+    }
+
+    return render(request, "task_manager/index.html", context=context)
+
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    context_object_name = "position_list"
+    template_name = "task_manager/position_list.html"
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position_list")
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position_list")
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("task_manager:position_list")
