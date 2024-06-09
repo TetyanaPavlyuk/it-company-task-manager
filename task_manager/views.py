@@ -36,15 +36,40 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
     fields = "__all__"
-    success_url = reverse_lazy("task_manager:position_list")
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
     fields = "__all__"
-    success_url = reverse_lazy("task_manager:position_list")
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
-    success_url = reverse_lazy("task_manager:position_list")
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    model = Worker
+    paginate_by = 30
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    queryset = Worker.objects.all().prefetch_related("position")
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Worker
+    # form_class =
+
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Worker
+    # form_class =
+
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Worker
+    success_url = reverse_lazy("task_manager:worker-list")
