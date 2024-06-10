@@ -54,6 +54,12 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     paginate_by = 30
 
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     pass
+    #
+    # def get_queryset(self):
+    #     pass
+
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
@@ -97,3 +103,34 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     success_url = reverse_lazy("task_manager:task-type-list")
 
+
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    paginate_by = 10
+
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     pass
+    #
+    # def get_queryset(self):
+    #     pass
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    # form_class =
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    # form_class =
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task_manager:task-list")
