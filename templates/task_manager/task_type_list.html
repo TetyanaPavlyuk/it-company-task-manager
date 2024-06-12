@@ -50,12 +50,12 @@
                 {% if task_type_list %}
                   {% for task_type in task_type_list %}
                       <tr class="{% cycle "table-warning" ""%}">
-                      <td>{{ task_type.id }}</td>
+                      <td>{{ forloop.counter }}</td>
                       <td>{{ task_type.name }}</td>
                     </tr>
                   {% endfor %}
                 {% else %}
-                  <p>There are no tasks</p>
+                  <p>There are no task types</p>
                 {% endif %}
               </tbody>
             </table>

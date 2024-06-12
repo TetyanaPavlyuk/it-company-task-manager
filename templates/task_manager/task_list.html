@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}
   <title>Tasks List</title>
-{% endblock title %}
+{% endblock %}
 {% block content %}
   <!-- [ Main Content ] start -->
   <!-- [ breadcrumb ] start -->
@@ -70,7 +70,7 @@
                     <tr>
                   {% endif %}
                     <td>
-                      <a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.id }}</a>
+                      {{forloop.counter}}
                     </td>
                     <td>
                       <a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
@@ -81,7 +81,7 @@
                     <td>{{ task.task_type }}</td>
                     <td>
                       {% for assignee in task.assignees.all %}
-                        {{ assignee.first_name }} {{ assignee.last_name }} 
+                        {{ assignee.first_name }} {{ assignee.last_name }}
                         <br>
                       {% endfor %}
                     </td>

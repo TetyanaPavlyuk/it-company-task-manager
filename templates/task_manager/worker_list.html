@@ -56,7 +56,7 @@
                 {% for worker in worker_list %}
                   <tr class="{% cycle "table-info" "" "table-success" "" %}">
                     <td>
-                      <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">{{ worker.id }}</a>
+                      {{ forloop.counter }}
                     </td>
                     <td>
                       <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">{{ worker.username }}</a>

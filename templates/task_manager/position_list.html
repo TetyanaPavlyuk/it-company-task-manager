@@ -50,12 +50,12 @@
                 {% if position_list %}
                   {% for position in position_list %}
                       <tr class="{% cycle "table-info" ""%}">
-                      <td>{{ position.id }}</td>
+                      <td>{{ forloop.counter }}</td>
                       <td>{{ position.name }}</td>
                     </tr>
                   {% endfor %}
                 {% else %}
-                  <p>There are no tasks</p>
+                  <p>There are no positions</p>
                 {% endif %}
               </tbody>
             </table>
