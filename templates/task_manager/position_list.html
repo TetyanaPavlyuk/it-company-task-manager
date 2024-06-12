@@ -44,6 +44,8 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
               </thead>
               <tbody>
@@ -52,6 +54,18 @@
                       <tr class="{% cycle "table-info" ""%}">
                       <td>{{ forloop.counter }}</td>
                       <td>{{ position.name }}</td>
+                      <td>
+                        <a href="{% url 'task_manager:position-update' pk=position.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-edit"></i>
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{% url 'task_manager:position-delete' pk=position.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-delete"></i>
+                        </a>
+                      </td>
                     </tr>
                   {% endfor %}
                 {% else %}

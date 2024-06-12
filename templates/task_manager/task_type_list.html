@@ -44,6 +44,8 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
               </thead>
               <tbody>
@@ -52,6 +54,18 @@
                       <tr class="{% cycle "table-warning" ""%}">
                       <td>{{ forloop.counter }}</td>
                       <td>{{ task_type.name }}</td>
+                      <td>
+                        <a href="{% url 'task_manager:task-type-update' pk=task_type.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-edit"></i>
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{% url 'task_manager:task-type-delete' pk=task_type.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-delete"></i>
+                        </a>
+                      </td>
                     </tr>
                   {% endfor %}
                 {% else %}
