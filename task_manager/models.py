@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 
 class Position(models.Model):
@@ -25,13 +26,13 @@ class Worker(AbstractUser):
     class Meta:
         verbose_name = "worker"
         verbose_name_plural = "workers"
-        ordering = ["position", "last_name", "first_name"]
+        ordering = ["last_name", "first_name"]
 
     def __str__(self):
         return f"{self.position}: {self.last_name} {self.first_name}"
 
     def get_absolute_url(self):
-        pass
+        return reverse("task_manager:worker-detail", kwargs={"pk": self.pk})
 
 
 class TaskType(models.Model):
@@ -69,10 +70,10 @@ class Task(models.Model):
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks")
 
     class Meta:
-        ordering = ["-deadline", "name", ]
+        ordering = ["is_completed", "deadline", "name", ]
 
     def __str__(self):
         return f"{self.name} ({self.priority}) / {self.deadline}"
 
-    # def get_absolute_url(self):
-    #     pass
+    def get_absolute_url(self):
+        return reverse("task_manager:task-detail", kwargs={"pk": self.pk})
