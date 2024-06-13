@@ -1,9 +1,20 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
+from .forms import (
+    WorkerCreationForm,
+    WorkerUpdateForm,
+    TaskForm,
+    PositionSearchForm,
+    WorkerSearchForm,
+    TaskTypeSearchForm,
+    TaskSearchForm,
+)
 from .models import Position, Worker, TaskType, Task
 
 
@@ -32,6 +43,24 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "position_list"
     template_name = "task_manager/position_list.html"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PositionListView, self).get_context_data(**kwargs)
+        model = self.request.GET.get("model", "")
+
+        context["search_form"] = PositionSearchForm(
+            initial={"model": model}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Position.objects.all()
+        form = PositionSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["model"]
+            )
+        return queryset
+
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
@@ -52,28 +81,52 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
-    paginate_by = 30
+    queryset = Worker.objects.all().select_related("position")
+    paginate_by = 10
 
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     pass
-    #
-    # def get_queryset(self):
-    #     pass
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(WorkerListView, self).get_context_data(**kwargs)
+        model = self.request.GET.get("model", "")
+
+        context["search_form"] = WorkerSearchForm(
+            initial={"model": model}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = get_user_model().objects.select_related("position")
+        form = WorkerSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                Q(username__icontains=form.cleaned_data["model"]) |
+                Q(first_name__icontains=form.cleaned_data["model"]) |
+                Q(last_name__icontains=form.cleaned_data["model"]) |
+                Q(position__name__icontains=form.cleaned_data["model"])
+            )
+        return queryset
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
-    queryset = Worker.objects.all().prefetch_related("position")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        worker = self.get_object()
+        tasks = Task.objects.prefetch_related("assignees").filter(assignees__exact=worker)
+        context["tasks_completed"] = tasks.filter(is_completed=True)
+        context["task_defined"] = tasks.filter(is_completed=False)
+        return context
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
-    # form_class =
+    form_class = WorkerCreationForm
 
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    # form_class =
+    form_class = WorkerUpdateForm
+    success_url = reverse_lazy("task_manager:worker-list")
 
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -84,7 +137,25 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     context_object_name = "task_type_list"
-    template_name = "task_manager/task_type_list.html"
+    template_name = "task_manager/tasktype_list.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskTypeListView, self).get_context_data(**kwargs)
+        model = self.request.GET.get("model", "")
+
+        context["search_form"] = TaskTypeSearchForm(
+            initial={"model": model}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = TaskType.objects.all()
+        form = TaskTypeSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["model"]
+            )
+        return queryset
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -106,13 +177,26 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    paginate_by = 10
+    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees")
+    paginate_by = 5
 
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     pass
-    #
-    # def get_queryset(self):
-    #     pass
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskListView, self).get_context_data(**kwargs)
+        model = self.request.GET.get("model", "")
+
+        context["search_form"] = TaskSearchForm(
+            initial={"model": model}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+        form = TaskSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["model"]
+            )
+        return queryset
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -121,13 +205,13 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    # form_class =
+    form_class = TaskForm
     success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
-    # form_class =
+    form_class = TaskForm
     success_url = reverse_lazy("task_manager:task-list")
 
 
