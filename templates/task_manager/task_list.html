@@ -74,7 +74,7 @@
                       {{forloop.counter}}
                     </td>
                     <td>
-                      <a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+                      <a href="{{ task.get_absolute_url }}">{{ task.name }}</a>
                     </td>
                     <td>{{ task.deadline}}</td>
                     <td>{{ task.is_completed }}</td>
