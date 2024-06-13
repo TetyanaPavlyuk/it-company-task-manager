@@ -77,3 +77,20 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return reverse("task_manager:task-detail", kwargs={"pk": self.pk})
+
+
+class New(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(
+        Worker,
+        on_delete=models.DO_NOTHING,
+        related_name="news",
+    )
+
+    class Meta:
+        ordering = ["-creation_date", ]
+
+    def __str__(self):
+        return self.name
