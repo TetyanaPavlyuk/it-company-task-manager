@@ -1,18 +1,12 @@
 {% block search_form %}
   {% load crispy_forms_filters %}
-  <ul class="navbar-nav me-auto">
-    <li class="nav-item">
-      <a href="#" class="pop-search"><i class="feather icon-search"></i></a>
-      <div class="search-bar">
-        <form action="" method="get">
-          {{ search_form|crispy }}
-          <input type="text" class="form-control border-0 shadow-none">
-          <button type="submit" class="btn-check"></button>
-          <button type="button" class="btn-close">
-          </button>
-        </form>
-      </div>
-    </li>
-  </ul>
+  <form action="" method="get" class="d-flex">
+    <div class="form-group col-md-6">
+      {{ search_form|crispy }}
+    </div>
+    <div class="form-group">
+      <input type="submit" value="🔍" class="btn btn-primary m-l-10">
+    </div>
+  </form>
 {% endblock %}
-
+  
