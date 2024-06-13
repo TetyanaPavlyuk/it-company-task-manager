@@ -12,6 +12,7 @@
         <div class="col-md-12">
           <div class="page-header-title">
             <h5 class="m-b-10">Tasks List</h5>
+            {% include "includes/search_form.html" %}
           </div>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'task_manager:index' %}"><i class="feather icon-home"></i></a>
@@ -77,7 +78,7 @@
                     </td>
                     <td>{{ task.deadline}}</td>
                     <td>{{ task.is_completed }}</td>
-                    <td>{{ task.priority }}</td>
+                    <td>{{ task.get_priority_display }}</td>
                     <td>{{ task.task_type }}</td>
                     <td>
                       {% for assignee in task.assignees.all %}
