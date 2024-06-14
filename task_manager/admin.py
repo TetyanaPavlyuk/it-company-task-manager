@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from .models import Position, Worker, TaskType, Task
+from .models import Position, Worker, TaskType, Task, New
 
 
 @admin.register(Worker)
@@ -28,4 +28,5 @@ class TaskAdmin(admin.ModelAdmin):
 
 admin.site.register(Position)
 admin.site.register(TaskType)
+admin.site.register(New)
 admin.site.unregister(Group)
