@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from task_manager.models import Worker, Task
+from task_manager.models import Worker, Task, New
 
 
 class TaskForm(forms.ModelForm):
@@ -70,3 +70,8 @@ class TaskSearchForm(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "Search task"})
     )
 
+
+class NewForm(forms.ModelForm):
+    class Meta:
+        model = New
+        fields = ["name", "description", ]

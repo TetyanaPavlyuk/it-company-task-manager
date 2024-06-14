@@ -14,8 +14,9 @@ from .forms import (
     WorkerSearchForm,
     TaskTypeSearchForm,
     TaskSearchForm,
+    NewForm,
 )
-from .models import Position, Worker, TaskType, Task
+from .models import Position, Worker, TaskType, Task, New
 
 
 @login_required
@@ -24,6 +25,7 @@ def index(request):
     num_experts = Worker.objects.count()
     num_completed_tasks = Task.objects.filter(is_completed=True).count()
     num_defined_tasks = Task.objects.filter(is_completed=False).count()
+    new_list = New.objects.all()
 
     num_visits = request.session.get("num_visits", 1)
     request.session["num_visits"] = num_visits + 1
@@ -33,6 +35,7 @@ def index(request):
         "num_completed_tasks": num_completed_tasks,
         "num_defined_tasks": num_defined_tasks,
         "num_visits": num_visits,
+        "new_list": new_list,
     }
 
     return render(request, "task_manager/index.html", context=context)
@@ -82,7 +85,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     queryset = Worker.objects.all().select_related("position")
-    paginate_by = 10
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(WorkerListView, self).get_context_data(**kwargs)
@@ -178,7 +181,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees")
-    paginate_by = 5
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskListView, self).get_context_data(**kwargs)
@@ -218,3 +221,27 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task_manager:task-list")
+
+
+class NewCreateView(LoginRequiredMixin, generic.CreateView):
+    model = New
+    form_class = NewForm
+    success_url = reverse_lazy("task_manager:index")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class NewUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = New
+    form_class = NewForm
+    success_url = reverse_lazy("task_manager:index")
+
+    def get_queryset(self):
+        return New.objects.filter(author=self.request.user)
+
+
+class NewDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = New
+    success_url = reverse_lazy("task_manager:index")

@@ -1,0 +1,30 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>News {{ object|yesno:"Update, Create" }}</title>
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="mb-0">News {{ object|yesno:"Update, Create" }}</h5>
+        </div>
+        <div class="card-body border-top show">
+          <form action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group row">
+                <label class="col-3 col-form-label fw-bold">{{ field.label }}</label>
+                <div class="col-9">
+                  {{ field }}
+                </div>
+              </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
