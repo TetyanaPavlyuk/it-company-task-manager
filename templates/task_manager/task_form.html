@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block title %}
   <title>Task {{ object|yesno:"Update, Create" }}</title>
@@ -13,14 +14,7 @@
         <div class="card-body border-top show">
           <form action="" method="post">
             {% csrf_token %}
-            {% for field in form %}
-              <div class="form-group row">
-                <label class="col-3 col-form-label fw-bold">{{ field.label }}</label>
-                <div class="col-9">
-                  {{ field }}
-                </div>
-              </div>
-            {% endfor %}
+            {{ form|crispy }}
             <button type="submit" class="btn btn-primary">Save</button>
           </form>
         </div>
