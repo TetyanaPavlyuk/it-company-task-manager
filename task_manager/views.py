@@ -131,6 +131,9 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = WorkerUpdateForm
     success_url = reverse_lazy("task_manager:worker-list")
 
+    def get_queryset(self):
+        return Worker.objects.filter(username=self.request.user.username)
+
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
