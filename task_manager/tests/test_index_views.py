@@ -4,7 +4,6 @@ from django.urls import reverse
 
 from task_manager.models import (
     Position,
-    Worker,
     TaskType,
     Task,
     New,
