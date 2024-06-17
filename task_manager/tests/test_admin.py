@@ -33,7 +33,10 @@ class AdminSiteTests(TestCase):
         """
         Test that driver's license number is on driver detail admin page
         """
-        url = reverse("admin:task_manager_worker_change", args=[self.worker.id])
+        url = reverse(
+            "admin:task_manager_worker_change",
+            args=[self.worker.id]
+        )
         res = self.client.get(url)
         self.assertContains(res, self.worker.position)
 

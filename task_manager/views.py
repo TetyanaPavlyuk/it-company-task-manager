@@ -115,7 +115,8 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         worker = self.get_object()
-        tasks = Task.objects.prefetch_related("assignees").filter(assignees__exact=worker)
+        tasks = (Task.objects.prefetch_related("assignees").
+                 filter(assignees__exact=worker))
         context["tasks_completed"] = tasks.filter(is_completed=True)
         context["task_defined"] = tasks.filter(is_completed=False)
         return context
@@ -183,7 +184,8 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees")
+    queryset = (Task.objects.all().select_related("task_type").
+                prefetch_related("assignees"))
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -196,7 +198,8 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+        queryset = (Task.objects.select_related("task_type").
+                    prefetch_related("assignees"))
         form = TaskSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(

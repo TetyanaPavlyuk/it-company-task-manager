@@ -82,10 +82,18 @@ class PrivateIndexTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         worker_count = get_user_model().objects.count()
-        completed_tasks_count = Task.objects.filter(is_completed="True").count()
-        defined_tasks_count = Task.objects.filter(is_completed="False").count()
+        completed_tasks_count = Task.objects.filter(
+            is_completed="True"
+        ).count()
+        defined_tasks_count = Task.objects.filter(
+            is_completed="False"
+        ).count()
         news = New.objects.all()
         self.assertEqual(response.context["num_experts"], worker_count)
-        self.assertEqual(response.context["num_completed_tasks"], completed_tasks_count)
-        self.assertEqual(response.context["num_defined_tasks"], defined_tasks_count)
+        self.assertEqual(
+            response.context["num_completed_tasks"], completed_tasks_count
+        )
+        self.assertEqual(
+            response.context["num_defined_tasks"], defined_tasks_count
+        )
         self.assertEqual(list(response.context["new_list"]), list(news))

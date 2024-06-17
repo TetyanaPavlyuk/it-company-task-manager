@@ -9,35 +9,35 @@ from task_manager.models import Position, TaskType, Task, New
 class ModelsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        position = Position.objects.create(
+        cls.position = Position.objects.create(
             name="Test Position",
         )
 
-        worker = get_user_model().objects.create_user(
+        cls.worker = get_user_model().objects.create_user(
             username="TestWorker",
             first_name="Test FirstName",
             last_name="Test LastName",
             password="TestPassword123",
-            position=position,
+            position=cls.position,
         )
 
-        task_type = TaskType.objects.create(
+        cls.task_type = TaskType.objects.create(
             name="Test Task Type"
         )
 
-        task = Task.objects.create(
+        cls.task = Task.objects.create(
             name="Test Task",
             description="Some Description",
             deadline="2024-06-14",
             is_completed=True,
-            task_type=task_type,
+            task_type=cls.task_type,
         )
-        task.assignees.add(worker)
+        cls.task.assignees.add(cls.worker)
 
-        news = New.objects.create(
+        cls.news = New.objects.create(
             name="Test New",
             description="Some Description",
-            author=worker,
+            author=cls.worker,
         )
 
     def test_position_str(self):
@@ -88,7 +88,8 @@ class ModelsTests(TestCase):
     def test_create_task(self):
         task = Task.objects.get(id=1)
         task_type = TaskType.objects.get(id=1)
-        assignees = get_user_model().objects.prefetch_related("tasks").filter(tasks=task)
+        assignees = (get_user_model().objects.
+                     prefetch_related("tasks").filter(tasks=task))
         self.assertEqual(task.name, "Test Task")
         self.assertEqual(task.description, "Some Description")
         self.assertEqual(task.deadline, datetime.date(2024, 6, 14))

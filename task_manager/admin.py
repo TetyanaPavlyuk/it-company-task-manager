@@ -9,7 +9,7 @@ from .models import Position, Worker, TaskType, Task, New
 class WorkerAdmin(UserAdmin):
     list_display = UserAdmin.list_display + (
         "position",
-)
+    )
     fieldsets = UserAdmin.fieldsets + (
         (("Additional Info", {"fields": ("position", )}), )
     )

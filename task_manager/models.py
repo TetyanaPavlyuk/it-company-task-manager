@@ -67,7 +67,9 @@ class Task(models.Model):
         null=True,
         related_name="tasks"
     )
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks")
+    assignees = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="tasks"
+    )
 
     class Meta:
         ordering = ["is_completed", "deadline", "name", ]

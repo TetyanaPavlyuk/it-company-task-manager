@@ -25,14 +25,25 @@ class WorkerCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = Worker
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "position", "email", )
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "position",
+            "email",
+        )
 
 
 class WorkerUpdateForm(UserChangeForm):
 
     class Meta(UserChangeForm.Meta):
         model = Worker
-        fields = ("username", "first_name", "last_name", "position", "email", )
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "position",
+            "email",
+        )
 
 
 class PositionSearchForm(forms.Form):
@@ -40,7 +51,9 @@ class PositionSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search position by name"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search position by name"}
+        )
     )
 
 
@@ -49,7 +62,9 @@ class WorkerSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search specialist"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search specialist"}
+        )
     )
 
 
@@ -58,7 +73,9 @@ class TaskTypeSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search task type by name"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search task type by name"}
+        )
     )
 
 
@@ -67,7 +84,9 @@ class TaskSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search task"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search task"}
+        )
     )
 
 
