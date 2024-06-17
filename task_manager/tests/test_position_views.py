@@ -31,7 +31,7 @@ class PublicPositionTest(TestCase):
             self.assertNotEqual(res.status_code, 200)
 
 
-class PrivateManufacturerTest(TestCase):
+class PrivatePositionTest(TestCase):
     def setUp(self):
         self.position1 = Position.objects.create(
             name="Test Position",
