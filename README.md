@@ -1,4 +1,37 @@
-# it-company-task-manager
+# Name of the project
+> it-company-task-manager
 
-News can edit only author. Personal information can edit
-only logged-in owner.
+Django project for managing tasks and workers in IT company.
+
+## Check it out
+
+[]
+
+## Installing / Getting started
+
+Python3 must be already installed.
+
+```shell
+git clone https://github.com/TetyanaPavlyuk/it-company-task-manager.git
+cd it-company-task-manager/
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py runserver # Starts Django server
+```
+
+
+## Features
+
+* Authentication functionality for Worker/User
+* Managing tasks, task types, workers, positions and news from website interface (CRUD)
+* Every Worker can publish some news in the title page
+* Only logged-in author/Worker can edit his news/post
+* Personal information can edit only logged-in owner/Worker
+* Tasks list - tasks displayed in the next order:
+  - at the end of page displayed completed tasks (they are highlighted in green)
+  - all tasks sorted by deadline date and name
+  - overdue tasks are highlighted in red
+  - high priority tasks are highlighted in orange, medium - blue, low - grey and undefined - without highlighted
+* Admin panel for advanced managing
+
