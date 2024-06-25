@@ -5,7 +5,7 @@ Django project for managing tasks and workers in IT company.
 
 ## Check it out
 
-[]
+[Task Manager project deployed to Render](https://it-company-task-manager-8oye.onrender.com/)
 
 ## Installing / Getting started
 
@@ -34,4 +34,8 @@ python manage.py runserver # Starts Django server
   - overdue tasks are highlighted in red
   - high priority tasks are highlighted in orange, medium - blue, low - grey and undefined - without highlighted
 * Admin panel for advanced managing
+
+You can test the functionality of the project using the following credentials:
+login: user
+password: user12345
 
