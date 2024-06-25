@@ -35,7 +35,8 @@ python manage.py runserver # Starts Django server
   - high priority tasks are highlighted in orange, medium - blue, low - grey and undefined - without highlighted
 * Admin panel for advanced managing
 
+### Additional info
 You can test the functionality of the project using the following credentials:
-login: user
-password: user12345
+* login: user
+* password: user12345
 
