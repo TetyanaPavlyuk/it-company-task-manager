@@ -33,7 +33,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "https://it-company-task-manager-8oye.onrender.com",
+    "it-company-task-manager-8oye.onrender.com",
 ]
 
 
