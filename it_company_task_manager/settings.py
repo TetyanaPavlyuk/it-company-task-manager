@@ -31,9 +31,9 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 ALLOWED_HOSTS = [
+    "it-company-task-manager-8oye.onrender.com",
     "127.0.0.1",
     "localhost",
-    "it-company-task-manager-8oye.onrender.com",
 ]
 
 
