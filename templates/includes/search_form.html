@@ -1,0 +1,12 @@
+{% block search_form %}
+  {% load crispy_forms_filters %}
+  <form action="" method="get" class="d-flex">
+    <div class="form-group col-md-6">
+      {{ search_form|crispy }}
+    </div>
+    <div class="form-group">
+      <input type="submit" value="🔍" class="btn btn-primary m-l-10">
+    </div>
+  </form>
+{% endblock %}
+  

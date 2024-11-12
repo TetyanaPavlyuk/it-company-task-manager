@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>Task Types List</title>
+{% endblock %}
+{% block search_form %}
+  {% include "includes/search_form.html" %}
+{% endblock %}
+{% block content %}
+  <!-- [ Main Content ] start -->
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h5 class="m-b-10">Task Types List</h5>
+            {% include "includes/search_form.html" %}
+          </div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'task_manager:index' %}"><i class="feather icon-home"></i></a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">Task Types List</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+  <div class="row">
+    <!-- [ Contextual-table ] start -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="inline_label">
+            Task Types
+            <a href="{% url 'task_manager:task-type-create' %}" class="btn btn-primary link-to-page"
+               style="margin-left: 10px">
+              Create
+            </a>
+          </h3>
+
+        </div>
+        <div class="card-body table-border-style">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% if task_type_list %}
+                  {% for task_type in task_type_list %}
+                      <tr class="{% cycle "table-warning" ""%}">
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ task_type.name }}</td>
+                      <td>
+                        <a href="{% url 'task_manager:task-type-update' pk=task_type.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-edit"></i>
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{% url 'task_manager:task-type-delete' pk=task_type.id %}"
+                           class="btn btn-primary btn-sm rounded m-0">
+                          <i class="feather icon-delete"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <p>There are no task types</p>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Contextual-table ] end -->
+  </div>
+  <!-- [ Main Content ] end -->
+{% endblock content %}
+

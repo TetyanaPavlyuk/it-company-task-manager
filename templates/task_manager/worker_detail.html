@@ -1,0 +1,179 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>Specialist Details</title>
+{% endblock %}
+{% block content %}
+  <!-- [ Main Content ] start -->
+  <!-- profile header start -->
+  <div class="user-profile user-card mb-4">
+    <div class="card-header border-0 p-0 pb-0">
+      <img
+          src="{% static 'assets/images/user/cover.jpg' %}"
+          alt=""
+          class="img-fluid"
+          style="width: 100%; height: 10rem; object-fit: cover; object-position: top"
+      >
+      <div class="overlay"></div>
+    </div>
+    <div class="card-body pt-0">
+      <div class="user-about-block m-0">
+        <div class="row">
+          <div class="col-md-12 mt-md-4">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h4 class="mb-1">{{ worker.first_name }} {{ worker.last_name }}</h4>
+                <p class="mb-2 text-muted">{{ worker.position }}</p>
+              </div>
+              <a href="{% url 'task_manager:worker-delete' pk=worker.id %}"
+                 class="btn btn-primary btn-sm rounded m-0 float-end">
+                <i class="feather icon-delete"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- profile header end -->
+  <!-- profile body start -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <h4 class="mb-0">Personal details</h4>
+          <a href="{% url 'task_manager:worker-update' pk=worker.id %}"
+             class="btn btn-primary btn-sm rounded m-0 float-end">
+            <i class="feather icon-edit"></i>
+          </a>
+        </div>
+        <div class="card-body border-top pro-det-edit collapse show" id="pro-det-edit-1">
+          <form>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label fw-bold">Username</label>
+              <div class="col-sm-9">
+                {{ worker.username }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label fw-bold">First Name</label>
+              <div class="col-sm-9">
+                {{ worker.first_name }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label fw-bold">Last Name</label>
+              <div class="col-sm-9">
+                {{ worker.last_name }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label fw-bold">Position</label>
+              <div class="col-sm-9">
+                {{ worker.position }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label fw-bold">Email</label>
+              <div class="col-sm-9">
+                {{ worker.email }}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <h4 class="mb-0">Defined Tasks</h4>
+        </div>
+        <div class="card-body border-top pro-det-edit collapse show" id="pro-det-edit-1">
+          <form>
+            <div class="form-group row">
+              {% for task in task_defined %}
+                <div class="card-block col-md-12 bg-light card-border-c-blue">
+                  <h5>
+                    {{ task.name }}
+                    <div class="d-inline col-md-5 justify-content-between">
+                      <a href="{% url 'task_manager:task-delete' pk=task.id %}"
+                         class="btn btn-primary btn-sm rounded m-1 float-end">
+                        <i class="feather icon-delete"></i>
+                      </a>
+                      <a href="{% url 'task_manager:task-update' pk=task.id %}"
+                         class="btn btn-primary btn-sm rounded m-1 float-end">
+                        <i class="feather icon-edit"></i>
+                      </a>
+                    </div>
+                  </h5>
+                </div>
+                <div class="card-block">
+                  <p><strong>Task Type: </strong>{{ task.task_type }}</p>
+                  <p><strong>Priority: </strong>{{ task.get_priority_display }}</p>
+                  <p><strong>Deadline: </strong>{{ task.deadline }}</p>
+                  <p><strong>Description:</strong> {{ task.description }}</p>
+                  <div class="flex-container">
+                    <div class="flex-column d-inline-block align-top"><strong>Assignees: </strong></div>
+                    <div class="flex-column d-inline-block">
+                      {% for assignee in task.assignees.all %}
+                        {{ assignee }}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <p>No Defined Tasks!</p>
+              {% endfor %}
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <h4 class="mb-0">Completed Tasks</h4>
+        </div>
+        <div class="card-body border-top pro-det-edit collapse show" id="pro-det-edit-1">
+          <form>
+            <div class="form-group row">
+              {% for task in tasks_completed %}
+                <div class="card-block col-md-12 bg-light card-border-c-green">
+                  <h5 class="">
+                    {{ task.name }}
+                    <div class="d-inline col-md-5 justify-content-between">
+                      <a href="{% url 'task_manager:task-delete' pk=task.id %}"
+                         class="btn btn-primary btn-sm rounded m-1 float-end">
+                        <i class="feather icon-delete"></i>
+                      </a>
+                      <a href="{% url 'task_manager:task-update' pk=task.id %}"
+                         class="btn btn-primary btn-sm rounded m-1 float-end">
+                        <i class="feather icon-edit"></i>
+                      </a>
+                    </div>
+                  </h5>
+                </div>
+                <div class="card-block">
+                  <p><strong>Task Type: </strong>{{ task.task_type }}</p>
+                  <p><strong>Priority: </strong>{{ task.get_priority_display }}</p>
+                  <p><strong>Deadline: </strong>{{ task.deadline }}</p>
+                  <p><strong>Description:</strong> {{ task.description }}</p>
+                  <div class="flex-container">
+                    <div class="flex-column d-inline-block align-top"><strong>Assignees: </strong></div>
+                    <div class="flex-column d-inline-block">
+                      {% for assignee in task.assignees.all %}
+                        {{ assignee }}
+                        <br>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <p>No Completed Tasks!</p>
+              {% endfor %}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- profile body end -->
+  <!-- [ Main Content ] end -->
+{% endblock content %}
+
