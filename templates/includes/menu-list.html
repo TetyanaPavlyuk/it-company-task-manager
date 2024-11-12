@@ -1,0 +1,39 @@
+{% load i18n static admin_gradient %}
+<ul class="nav pcoded-inner-navbar ">
+  <li class="nav-item pcoded-menu-caption">
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'task_manager:index' %}" class="nav-link "><span class="pcoded-micon"><i
+        class="feather icon-home"></i></span><span class="pcoded-mtext">Home page</span></a>
+  </li>
+  <li class="nav-item pcoded-hasmenu">
+    <a class="nav-link">
+      <span class="pcoded-micon"><i class="feather {{ app.icon }}"></i></span>
+      <span
+          class="pcoded-mtext">Tasks Manager</span>
+    </a>
+
+    <ul class="pcoded-submenu">
+      <li class="">
+        <a class="" href="{% url 'task_manager:task-list' %}">
+          Tasks
+        </a>
+      </li>
+      <li class="">
+        <a class="" href="{% url 'task_manager:worker-list' %}">
+          Specialists
+        </a>
+      </li>
+      <li class="">
+        <a class="" href="{% url 'task_manager:position-list' %}">
+          Positions
+        </a>
+      </li>
+      <li class="">
+        <a class="" href="{% url 'task_manager:task-type-list' %}">
+          Task Types
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>

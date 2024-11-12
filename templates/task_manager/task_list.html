@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>Tasks List</title>
+{% endblock %}
+{% block content %}
+  <!-- [ Main Content ] start -->
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h5 class="m-b-10">Tasks List</h5>
+            {% include "includes/search_form.html" %}
+          </div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'task_manager:index' %}"><i class="feather icon-home"></i></a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">Tasks List</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+  <div class="row">
+    <!-- [ Contextual-table ] start -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="inline_label">
+            Tasks
+            <a href="{% url 'task_manager:task-create' %}" class="btn btn-primary link-to-page"
+               style="margin-left: 10px">
+              Create
+            </a>
+          </h3>
+
+          <span class="d-block m-t-5"></span>
+        </div>
+        <div class="card-body table-border-style">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Deadline</th>
+                <th>Is Completed</th>
+                <th>Priority</th>
+                <th>Task Type</th>
+                <th>Assignees</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% if task_list %}
+                {% for task in task_list %}
+                  {% now "Y-m-d" as current_date %}
+                  {% if task.is_completed %}
+                    <tr class="table-success">
+                  {% elif current_date > task.deadline|date:"Y-m-d" %}
+                    <tr class="table-danger">
+                  {% elif task.priority == "L" %}
+                    <tr class="table-active">
+                  {% elif task.priority == "M" %}
+                    <tr class="table-info">
+                  {% elif task.priority == "H" %}
+                    <tr class="table-warning">
+                  {% else %}
+                    <tr>
+                  {% endif %}
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      <a href="{{ task.get_absolute_url }}">{{ task.name }}</a>
+                    </td>
+                    <td>{{ task.deadline}}</td>
+                    <td>{{ task.is_completed }}</td>
+                    <td>{{ task.get_priority_display }}</td>
+                    <td>{{ task.task_type }}</td>
+                    <td>
+                      {% for assignee in task.assignees.all %}
+                        {{ assignee.first_name }} {{ assignee.last_name }}
+                        <br>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <p>There are no tasks</p>
+              {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Contextual-table ] end -->
+  </div>
+  <!-- [ Main Content ] end -->
+{% endblock content %}
+

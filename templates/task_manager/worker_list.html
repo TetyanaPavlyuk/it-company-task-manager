@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>Specialists List</title>
+{% endblock %}
+{% block content %}
+  <!-- [ Main Content ] start -->
+  <!-- [ breadcrumb ] start -->
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h5 class="m-b-10">Specialists List</h5>
+            {% include "includes/search_form.html" %}
+          </div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'task_manager:index' %}"><i class="feather icon-home"></i></a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">Specialists List</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ breadcrumb ] end -->
+  <div class="row">
+    <!-- [ Contextual-table ] start -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="inline_label">
+            Specialists
+            <a href="{% url 'task_manager:worker-create' %}" class="btn btn-primary link-to-page"
+               style="margin-left: 10px">
+              Create
+            </a>
+          </h3>
+
+          <span class="d-block m-t-5"></span>
+        </div>
+        <div class="card-body table-border-style">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Username</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Position</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% if worker_list %}
+                {% for worker in worker_list %}
+                  <tr class="{% cycle "table-info" "" "table-success" "" %}">
+                    <td>
+                      {{ forloop.counter }}
+                    </td>
+                    <td>
+                      <a href="{{ worker.get_absolute_url }}">{{ worker.username }}</a>
+                    </td>
+                    <td>{{ worker.first_name}}</td>
+                    <td>{{ worker.last_name }}</td>
+                    <td>{{ worker.position }}</td>
+                    <td>{{ worker.email }}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <p>There are no specialists</p>
+              {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Contextual-table ] end -->
+  </div>
+  <!-- [ Main Content ] end -->
+{% endblock content %}
+

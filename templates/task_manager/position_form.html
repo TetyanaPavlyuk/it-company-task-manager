@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  <title>Position {{ object|yesno:"Update, Create" }}</title>
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <h5 class="mb-0">Position {{ object|yesno:"Update, Create" }}</h5>
+        </div>
+        <div class="card-body border-top pro-det-edit collapse show" id="pro-det-edit-1">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-bolder">{{ form.name.label }}</label>
+              <div class="col-sm-9">
+                {{ form.name }}
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
